@@ -1,9 +1,29 @@
-@import url("https://webglfundamentals.org/webgl/resources/webgl-tutorials.css");
+@import url('https://fonts.googleapis.com/css2?family=Lucida+Sans=Typewriter');
+
 body {
-  margin: 0;
+  font-family: 'Lucida Sans Typewriter', monospace;
 }
-canvas {
-  width: 100vw;
-  height: 100vh;
-  display: block;
+
+.title {
+  text-align: center;
+}
+
+.canvas {
+  text-align: center;
+}
+
+#gl-canvas {
+  width: 700px;
+  height: 700px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+}
+
+.control-section {
+  background-color: whitesmoke;
+  border-radius: 10px;
+  width: 1000px;
+  height: fit-content;
+  padding: 20px 20px;
+  margin: auto;
 }

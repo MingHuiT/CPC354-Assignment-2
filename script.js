@@ -2,7 +2,6 @@
 var canvas;
 var gl;
 
-var numVertices = 36
 // Store points and colors : Cube
 var pointsC = [];
 var colorsC = [];
@@ -287,7 +286,7 @@ function render()
   gl.uniform3fv(thetaLoc, theta);
 
   // Render 
-  gl.drawArrays( gl.TRIANGLES, 0, numVertices );
+  gl.drawArrays( gl.TRIANGLES, 0, pointsC.length );
   //gl.drawArrays( gl.TRIANGLES, 0, pointsT.length );
   //gl.drawArrays( gl.TRIANGLES, 0, pointsO.length );
 
