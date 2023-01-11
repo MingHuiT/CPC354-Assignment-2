@@ -1,6 +1,11 @@
-var gl;
-var cube, theta, thetaLoc, colorLoc;
-var c 
+var gl, canvas;
+var obj = "sphere";
+var object;
+var theta, thetaLoc, colorLoc;
+
+const cube_obj = "cube"
+const cylinder_obj = "cylinder"
+const sphere_obj = "sphere"
 
 const eye = vec3(1, 0, 2);                        //3.4a
 const at = vec3(0.0, 0.0, 0.0);
@@ -23,16 +28,31 @@ var materialShininess = 200.0;                    //3.3c
 
 window.onload = function init()
 {
-    var canvas = document.getElementById("gl-canvas");
+    canvas = document.getElementById("gl-canvas");
 
     gl = WebGLUtils.setupWebGL(canvas);
     if (!gl) {
         alert("WebGL isn’t available");
     }
+    buttonInteraction();
+    WebGLSetup();
 
-    c = cube(1.0)
-    // cube = createCube(1.0);                       //3.1 create different object
-    // cyl = cylinder(36, 3, true);
+    render();
+}
+
+function WebGLSetup(){
+    //3.1 create different object
+    // cube = createCube(1.0);
+    if (obj == cube_obj){
+      object = cube(1.0);
+    }
+    else if (obj == cylinder_obj){
+      object = cylinder(72, 3, true);
+    }
+    else if (obj == sphere_obj){
+      object = sphere(5);
+    }
+    
     theta = [0.0, 0.0, 0.0];
 
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -57,8 +77,8 @@ window.onload = function init()
     var points = [];
     var normals = [];
     // points = points.concat(cube.faces_as_triangles(normals));
-    points = points.concat(c.TriangleVertices)
-    normals = normals.concat(c.TriangleFaceColors  )
+    points = points.concat(object.TriangleVertices)
+    normals = normals.concat(object.TriangleVertexColors)
 
     var lightPositionLoc = gl.getUniformLocation(program, "lightPosition");
     gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
@@ -95,7 +115,13 @@ window.onload = function init()
     gl.vertexAttribPointer(vNormal, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vNormal);
 
-    render();
+}
+
+function buttonInteraction(){
+  document.getElementById("object").onchange = function(){
+    obj = document.getElementById("object").value
+    WebGLSetup()
+  }
 }
 
 function render()
@@ -114,9 +140,16 @@ function render()
 
     gl.uniform3fv(thetaLoc, flatten(theta));
 
-    gl.drawArrays( gl.TRIANGLES, 0, 36 );
+    if (obj == cube_obj){
+      gl.drawArrays( gl.TRIANGLES, 0, 36 );
+    }
+    else if (obj == cylinder_obj){
+      gl.drawArrays( gl.TRIANGLES, 0, 1728 );
+    }
+    else if (obj == sphere_obj){
+      gl.drawArrays( gl.TRIANGLES, 0, points.length );
+    }
     // gl.drawArrays( gl.TRIANGLES, 0, cube.count_vertices_faces );
-    // gl.drawArrays( gl.TRIANGLES, 0, 1728 );
 
     requestAnimFrame( render );
 }
