@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+  <link rel="stylesheet" href="style.css">
+  <title>Rotating Square Shaded</title>
+
+  <script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 vNormal;
+    attribute vec4 vPosition;
+    varying vec3 L, N, E;
+
+    uniform mat4 modelViewMatrix;
+    uniform mat4 projectionMatrix;
+    uniform vec3 theta;
+    uniform vec4 lightPosition;
+
+    void main()
+    {
+      vec3 angles = radians(theta);
+      vec3 c = cos(angles);
+      vec3 s = sin(angles);
+      mat4 rx = mat4(
+        1.0, 0.0, 0.0, 0.0,
+        0.0, c.x, s.x, 0.0,
+        0.0, -s.x, c.x, 0.0,
+        0.0, 0.0, 0.0, 1.0
+      );
+      mat4 ry = mat4(
+        c.y, 0.0, -s.y, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        s.y, 0.0, c.y, 0.0,
+        0.0, 0.0, 0.0, 1.0
+      );
+
+      vec3 pos = (modelViewMatrix * rx * ry * vPosition).xyz;
+      vec3 lightPos = (modelViewMatrix * lightPosition).xyz;
+
+      L = normalize(lightPos - pos);
+      N = normalize((modelViewMatrix * rx * ry * vNormal).xyz);
+      E = -normalize(pos);
+
+      gl_Position = projectionMatrix * modelViewMatrix * rx * ry * vPosition;
+    }
+  </script>
+
+  <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    varying vec3 L, N, E;
+
+    uniform vec4 ambientProduct;
+    uniform vec4 diffuseProduct;
+    uniform vec4 specularProduct;
+    uniform float shininess;
+
+    void main()
+    {
+      vec4 diffuse = max(dot(L, N), 0.0) * diffuseProduct;
+      vec3 H = normalize(L+E);
+      vec4 specular = pow(max(dot(N, H), 0.0), shininess) * specularProduct;
+
+      if (dot(L, N) < 0.0)
+        specular = vec4(0.0, 0.0, 0.0, 1.0);
+
+      vec4 fColor = ambientProduct + diffuse + specular;
+      fColor.a = 1.0;
+
+      gl_FragColor = fColor;
+    }
+  </script>
+
+  <script type="text/javascript" src="Common/webgl-utils.js"></script>
+  <script type="text/javascript" src="Common/initShaders.js"></script>
+  <script type="text/javascript" src="vecMat.js"></script>
+  <script type="text/javascript" src="cube.js"></script>
+  <script type="text/javascript" src="cylinder.js"></script>
+  <script type="text/javascript" src="sphere.js"></script>
+  <script type="text/javascript" src="geometry.js"></script>
+  <script type="text/javascript" src="index.js"></script>
+
+</head>
+
+  <body>
+    <div>
+      <canvas id="gl-canvas" width="512" height="512">
+        <!-- The following message is displayed if the browser doesn’t support HTML5 -->
+        Sorry; your web browser does not support HTML5’s canvas element.
+      </canvas>
+    </div>
+  </body>
+
+</html>
