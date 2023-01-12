@@ -643,11 +643,11 @@ for(var i=0; i<=numDivisions; i++)
 
       for(var ii=0; ii<4; ii++) for(var jj=0; jj<4; jj++) {
           var temp = vec4(patch[n][4*ii+jj]); ;
-          temp = scaled( tt[ii][jj], temp);
+          temp = scale( tt[ii][jj], temp);
           tdata[i][j] = add(tdata[i][j], temp);
 
           var stemp = vec4(patch[n][4*ii+jj]); ;
-          stemp = scaled( ss[ii][jj], stemp);
+          stemp = scale( ss[ii][jj], stemp);
           sdata[i][j] = add(sdata[i][j], stemp);
 
       }
