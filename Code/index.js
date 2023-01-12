@@ -59,6 +59,8 @@ function WebGLSetup(){
     }
     else if (obj == teapot_obj){
       object = teapot(3);
+      object.scale(0.2, 0.2, 0.2);
+
     }
     
     theta = [0.0, 0.0, 0.0];
