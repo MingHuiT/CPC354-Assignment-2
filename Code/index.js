@@ -19,8 +19,8 @@ const fov = 55;
 const near = 0.3;
 const far = 5;
 
-// var lightPosition = vec4(-1.5, 1.0, 4.0, 1.0);    //3.2b, 3.2c, 3.2d
-var lightPosition = vec4(0.0, 0.0, -1.0, 1.0);
+var lightPosition = vec4(-1.0, 0.0, 0.0, 1.0);    //3.2b, 3.2c, 3.2d
+// var lightPosition = vec4(0.0, 0.0, -1.0, 1.0);
 var lightAmbient = vec4(0.1, 0.2, 0.2, 1.0);      //3.2a
 var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
 var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
@@ -45,8 +45,6 @@ window.onload = function init()
 }
 
 function WebGLSetup(){
-    //3.1 create different object
-    // cube = createCube(1.0);
     if (obj == cube_obj){
       object = cube(1.0);
     }
@@ -128,12 +126,35 @@ function WebGLSetup(){
     var vNormal = gl.getAttribLocation(program, "vNormal");
     gl.vertexAttribPointer(vNormal, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vNormal);
-
 }
 
 function buttonInteraction(){
   document.getElementById("object").onchange = function(){
-    obj = document.getElementById("object").value
+    obj = this.value
+    WebGLSetup()
+  }
+  document.getElementById("light_diffuse").onchange = function(){
+    var tempcolor = this.value;
+    var rgb = convertHexToRGB(tempcolor);
+    lightDiffuse[0] = rgb.x
+    lightDiffuse[1] = rgb.y
+    lightDiffuse[2] = rgb.z
+    WebGLSetup()
+  }
+  document.getElementById("light_ambient").onchange = function(){
+    var tempcolor = this.value;
+    var rgb = convertHexToRGB(tempcolor);
+    lightAmbient[0] = rgb.x
+    lightAmbient[1] = rgb.y
+    lightAmbient[2] = rgb.z
+    WebGLSetup()
+  }
+  document.getElementById("light_specular").onchange = function(){
+    var tempcolor = this.value;
+    var rgb = convertHexToRGB(tempcolor);
+    lightSpecular[0] = rgb.x
+    lightSpecular[1] = rgb.y
+    lightSpecular[2] = rgb.z
     WebGLSetup()
   }
   document.getElementById("light_type").onclick = function(){
@@ -145,6 +166,12 @@ function buttonInteraction(){
       lightPosition[3] = 1.0
     }
     console.log(lightPosition[3])
+  }
+  document.getElementById("on_off").onclick = function(){
+    
+  }
+  document.getElementById("light_X").onchange = function(){
+
   }
 }
 
@@ -164,20 +191,6 @@ function render()
 
     gl.uniform3fv(thetaLoc, flatten(theta));
     gl.drawArrays( gl.TRIANGLES, 0, points.length );
-
-    // if (obj == cube_obj){
-    //   gl.drawArrays( gl.TRIANGLES, 0, 36 );
-    // }
-    // else if (obj == cylinder_obj){
-    //   gl.drawArrays( gl.TRIANGLES, 0, 1728 );
-    // }
-    // else if (obj == sphere_obj){
-    //   gl.drawArrays( gl.TRIANGLES, 0, points.length );
-    // }
-    // else if (obj == teapot_obj){
-    //   gl.drawArrays( gl.TRIANGLES, 0, points.length );
-    // }
-    // gl.drawArrays( gl.TRIANGLES, 0, cube.count_vertices_faces );
 
     requestAnimFrame( render );
 }
