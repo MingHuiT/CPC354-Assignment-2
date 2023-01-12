@@ -3,9 +3,13 @@ var obj = "cube";
 var object;
 var theta, thetaLoc, colorLoc;
 
+var points = [];
+var normals = [];
+
 const cube_obj = "cube"
 const cylinder_obj = "cylinder"
 const sphere_obj = "sphere"
+const teapot_obj = "teapot"
 
 const eye = vec3(1, 0, 2);                        //3.4a
 const at = vec3(0.0, 0.0, 0.0);
@@ -51,6 +55,10 @@ function WebGLSetup(){
     }
     else if (obj == sphere_obj){
       object = sphere(5);
+      object.scale(0.8, 0.8, 0.8);
+    }
+    else if (obj == teapot_obj){
+      object = teapot(3);
     }
     
     theta = [0.0, 0.0, 0.0];
@@ -74,11 +82,17 @@ function WebGLSetup(){
 
     thetaLoc = gl.getUniformLocation(program, "theta");
 
-    var points = [];
-    var normals = [];
+    points = []
+    normals = []
     // points = points.concat(cube.faces_as_triangles(normals));
-    points = points.concat(object.TriangleVertices)
-    normals = normals.concat(object.TriangleVertexColors)
+    if (obj != teapot_obj){
+      points = points.concat(object.TriangleVertices)
+      normals = normals.concat(object.TriangleVertexColors)
+    }
+    else{
+      points = object.TriangleVertices;
+      normals = object.Normals;
+    }
 
     var lightPositionLoc = gl.getUniformLocation(program, "lightPosition");
     gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
@@ -122,6 +136,16 @@ function buttonInteraction(){
     obj = document.getElementById("object").value
     WebGLSetup()
   }
+  document.getElementById("light_type").onclick = function(){
+    type = lightPosition[3]
+    if(type == 1.0){
+      lightPosition[3] = 0.0
+    }
+    else if (type == 0.0){
+      lightPosition[3] = 1.0
+    }
+    console.log(lightPosition[3])
+  }
 }
 
 function render()
@@ -139,16 +163,20 @@ function render()
     }
 
     gl.uniform3fv(thetaLoc, flatten(theta));
+    gl.drawArrays( gl.TRIANGLES, 0, points.length );
 
-    if (obj == cube_obj){
-      gl.drawArrays( gl.TRIANGLES, 0, 36 );
-    }
-    else if (obj == cylinder_obj){
-      gl.drawArrays( gl.TRIANGLES, 0, 1728 );
-    }
-    else if (obj == sphere_obj){
-      gl.drawArrays( gl.TRIANGLES, 0, points.length );
-    }
+    // if (obj == cube_obj){
+    //   gl.drawArrays( gl.TRIANGLES, 0, 36 );
+    // }
+    // else if (obj == cylinder_obj){
+    //   gl.drawArrays( gl.TRIANGLES, 0, 1728 );
+    // }
+    // else if (obj == sphere_obj){
+    //   gl.drawArrays( gl.TRIANGLES, 0, points.length );
+    // }
+    // else if (obj == teapot_obj){
+    //   gl.drawArrays( gl.TRIANGLES, 0, points.length );
+    // }
     // gl.drawArrays( gl.TRIANGLES, 0, cube.count_vertices_faces );
 
     requestAnimFrame( render );
