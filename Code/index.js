@@ -30,6 +30,10 @@ var materialDiffuse = vec4(0.4, 0.8, 0.4, 1.0);   //3.3b coefficient is a float 
 var materialSpecular = vec4(0.0, 0.4, 0.4, 1.0);  
 var materialShininess = 200.0;                    //3.3c
 
+var Kd = 1.0;
+var Ka = 1.0;
+var Ks = 1.0;
+
 window.onload = function init()
 {
     canvas = document.getElementById("gl-canvas");
@@ -135,13 +139,13 @@ function buttonInteraction(){
     obj = this.value
     WebGLSetup()
   }
+
   document.getElementById("light_diffuse").onchange = function(){
     var tempcolor = this.value;
     var rgb = convertHexToRGB(tempcolor);
     lightDiffuse[0] = rgb.x
     lightDiffuse[1] = rgb.y
     lightDiffuse[2] = rgb.z
-    WebGLSetup()
   }
   document.getElementById("light_ambient").onchange = function(){
     var tempcolor = this.value;
@@ -149,7 +153,6 @@ function buttonInteraction(){
     lightAmbient[0] = rgb.x
     lightAmbient[1] = rgb.y
     lightAmbient[2] = rgb.z
-    WebGLSetup()
   }
   document.getElementById("light_specular").onchange = function(){
     var tempcolor = this.value;
@@ -157,8 +160,8 @@ function buttonInteraction(){
     lightSpecular[0] = rgb.x
     lightSpecular[1] = rgb.y
     lightSpecular[2] = rgb.z
-    WebGLSetup()
   }
+
   document.getElementById("light_type").onclick = function(){
     type = lightPosition[3]
     if(type == 1.0){
@@ -167,14 +170,58 @@ function buttonInteraction(){
     else if (type == 0.0){
       lightPosition[3] = 1.0
     }
-    console.log(lightPosition[3])
   }
+
   document.getElementById("on_off").onclick = function(){
-    
-  }
-  document.getElementById("light_X").onchange = function(){
 
   }
+  
+  document.getElementById("light_X").onchange = function(){
+    lightPosition[0] = this.value;
+  }
+  document.getElementById("light_Y").onchange = function(){
+    lightPosition[1] = this.value;
+  }
+  document.getElementById("light_Z").onchange = function(){
+    lightPosition[2] = this.value;
+  }
+
+  document.getElementById("material_diffuse").onchange = function(){
+    var tempcolor = this.value;
+    var rgb = convertHexToRGB(tempcolor);
+    materialDiffuse[0] = rgb.x
+    materialDiffuse[1] = rgb.y
+    materialDiffuse[2] = rgb.z
+  }
+  document.getElementById("material_ambient").onchange = function(){
+    var tempcolor = this.value;
+    var rgb = convertHexToRGB(tempcolor);
+    materialAmbient[0] = rgb.x
+    materialAmbient[1] = rgb.y
+    materialAmbient[2] = rgb.z
+  }
+  document.getElementById("material_specular").onchange = function(){
+    var tempcolor = this.value;
+    var rgb = convertHexToRGB(tempcolor);
+    materialSpecular[0] = rgb.x
+    materialSpecular[1] = rgb.y
+    materialSpecular[2] = rgb.z
+  }
+
+  document.getElementById("coe_material_diffuse").onchange = function(){
+    Kd = this.value;
+  }
+  document.getElementById("coe_material_ambient").onchange = function(){
+    Ka = this.value;
+  }
+  document.getElementById("coe_material_specular").onchange = function(){
+    Ks = this.value;
+  }
+
+  document.getElementById("material_shininess").onchange = function(){
+    materialShininess = this.value;
+  }
+
 }
 
 function render()
