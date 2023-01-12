@@ -59,7 +59,7 @@ function WebGLSetup(){
     }
     else if (obj == teapot_obj){
       object = teapot(3);
-      object.scale(0.2, 0.2, 0.2);
+      object.scale(0.25, 0.25, 0.25);
 
     }
     

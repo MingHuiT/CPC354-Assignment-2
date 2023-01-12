@@ -85,14 +85,15 @@
 </head>
 
   <body>
-    <div>
+    <h1 style="text-align: center;">CPC354 Assignment 2 - Lightning and Shading</h1>
+    <div style="text-align: center;">
       <canvas id="gl-canvas" width="512" height="512">
         <!-- The following message is displayed if the browser doesn’t support HTML5 -->
         Sorry; your web browser does not support HTML5’s canvas element.
       </canvas>
     </div>
 
-    <div>
+    <div class="control-panel">
       <div class="object-selection">
             <label for="object">Choose an object: </label>
             <select name="object" id="object">
@@ -101,56 +102,56 @@
                 <option value="sphere">Sphere</option>
                 <option value="teapot">Teapot</option>
             </select>
-        </div>
-    </div>
-
-    <div>
-      <input type="color"></input>
-      <label>Diffuse Light </label>
-      <br>
-      <input type="color"></input>
-      <label>Ambient Light</label>
-      <br>
-      <input type="color"></input>
-      <label>Specular Light</label>
-      <br>
-    </div>
-
-    <div>
-      <button id="light_type">Change Light Type</button>
-      <button>Turn On or Off</button>
-    </div>
-
-    <div>
-      <input type="range">Light Position X value</input>
-      <br>
-      <input type="range">Light Position Y value</input>
-      <br>
-      <input type="range">Light Position Z value</input>
-    </div>
-
-    <div>
-      <input type="color"></input>
-      <label>Diffuse Material </label>
-      <br>
-      <input type="color"></input>
-      <label>Ambient Material</label>
-      <br>
-      <input type="color"></input>
-      <label>Specular Material</label>
-      <br>
-    </div>
+      </div>
     
-    <div>
-      <input type="range">Coefficient Diffuse Material</input>
-      <br>
-      <input type="range">Coefficient Ambient Material</input>
-      <br>
-      <input type="range">Coefficient Specular Material</input>
-    </div>
+      <div>
+        <input type="color"></input>
+        <label>Diffuse Light </label>
+        <br>
+        <input type="color"></input>
+        <label>Ambient Light</label>
+        <br>
+        <input type="color"></input>
+        <label>Specular Light</label>
+        <br>
+      </div>
 
-    <div>
-      <input type="range">Material Shininess</input>
+      <div>
+        <button id="light_type">Change Light Type</button>
+        <button>Turn On or Off</button>
+      </div>
+
+      <div>
+        <input type="range">Light Position X value</input>
+        <br>
+        <input type="range">Light Position Y value</input>
+        <br>
+        <input type="range">Light Position Z value</input>
+      </div>
+
+      <div>
+        <input type="color"></input>
+        <label>Diffuse Material </label>
+        <br>
+        <input type="color"></input>
+        <label>Ambient Material</label>
+        <br>
+        <input type="color"></input>
+        <label>Specular Material</label>
+        <br>
+      </div>
+      
+      <div>
+        <input type="range">Coefficient Diffuse Material</input>
+        <br>
+        <input type="range">Coefficient Ambient Material</input>
+        <br>
+        <input type="range">Coefficient Specular Material</input>
+      </div>
+
+      <div>
+        <input type="range">Material Shininess</input>
+      </div>
     </div>
 
 
