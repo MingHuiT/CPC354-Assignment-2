@@ -1,5 +1,5 @@
 var gl, canvas;
-var obj = "sphere";
+var obj = "cube";
 var object;
 var theta, thetaLoc, colorLoc;
 
