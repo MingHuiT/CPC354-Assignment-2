@@ -168,14 +168,16 @@ function buttonInteraction(){
     type = lightPosition[3]
     if(type == 1.0){
       lightPosition[3] = 0.0
+      document.getElementById("light_type").innerHTML = "Distance Light"
     }
     else if (type == 0.0){
       lightPosition[3] = 1.0
+      document.getElementById("light_type").innerHTML = "Point Light"
     }
   }
 
   document.getElementById("on_off").onclick = function(){
-
+    
   }
   
   document.getElementById("light_X").onchange = function(){
