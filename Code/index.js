@@ -24,6 +24,11 @@ var lightPosition = vec4(-1.0, 0.0, 0.0, 1.0);    //3.2b, 3.2c, 3.2d
 var lightAmbient = vec4(0.1, 0.2, 0.2, 1.0);      //3.2a
 var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
 var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var lightPositionLoc;
+var ambientProduct, ambientProductLoc;
+var diffuseProduct, diffuseProductLoc;
+var specularProduct, specularProductLoc;
+var shininessLoc;
 
 var materialAmbient = vec4(0.0, 1.0, 0.0, 1.0);   //3.3a
 var materialDiffuse = vec4(0.4, 0.8, 0.4, 1.0);   //3.3b coefficient is a float (0 to 1) multiply with diffuse, ambient, specular
@@ -98,24 +103,18 @@ function WebGLSetup(){
       normals = object.Normals;
     }
 
-    var lightPositionLoc = gl.getUniformLocation(program, "lightPosition");
-    gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
+    lightPositionLoc = gl.getUniformLocation(program, "lightPosition");
 
-    var ambientProduct = mult(lightAmbient, materialAmbient);
-    var ambientProductLoc = gl.getUniformLocation(program, "ambientProduct");
-    gl.uniform4fv(ambientProductLoc, flatten(ambientProduct));
+    ambientProduct = mult(lightAmbient, materialAmbient);
+    ambientProductLoc = gl.getUniformLocation(program, "ambientProduct");
 
-    var diffuseProduct = mult(lightDiffuse, materialDiffuse);
-    var diffuseProductLoc = gl.getUniformLocation(program, "diffuseProduct");
-    gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
+    diffuseProduct = mult(lightDiffuse, materialDiffuse);
+    diffuseProductLoc = gl.getUniformLocation(program, "diffuseProduct");
 
-    var specularProduct = mult(lightSpecular, materialSpecular);
-    var specularProductLoc =
-      gl.getUniformLocation(program, "specularProduct");
-    gl.uniform4fv(specularProductLoc, flatten(specularProduct));
+    specularProduct = mult(lightSpecular, materialSpecular);
+    specularProductLoc = gl.getUniformLocation(program, "specularProduct");
 
-    var shininessLoc = gl.getUniformLocation(program, "shininess");
-    gl.uniform1f(shininessLoc, materialShininess);
+    shininessLoc = gl.getUniformLocation(program, "shininess");
 
     var vBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
@@ -146,6 +145,7 @@ function buttonInteraction(){
     lightDiffuse[0] = rgb.x
     lightDiffuse[1] = rgb.y
     lightDiffuse[2] = rgb.z
+    diffuseProduct = mult(lightDiffuse, materialDiffuse);
   }
   document.getElementById("light_ambient").onchange = function(){
     var tempcolor = this.value;
@@ -153,6 +153,7 @@ function buttonInteraction(){
     lightAmbient[0] = rgb.x
     lightAmbient[1] = rgb.y
     lightAmbient[2] = rgb.z
+    ambientProduct = mult(lightAmbient, materialAmbient);
   }
   document.getElementById("light_specular").onchange = function(){
     var tempcolor = this.value;
@@ -160,6 +161,7 @@ function buttonInteraction(){
     lightSpecular[0] = rgb.x
     lightSpecular[1] = rgb.y
     lightSpecular[2] = rgb.z
+    specularProduct = mult(lightSpecular, materialSpecular);
   }
 
   document.getElementById("light_type").onclick = function(){
@@ -192,6 +194,7 @@ function buttonInteraction(){
     materialDiffuse[0] = rgb.x
     materialDiffuse[1] = rgb.y
     materialDiffuse[2] = rgb.z
+    diffuseProduct = mult(lightDiffuse, materialDiffuse);
   }
   document.getElementById("material_ambient").onchange = function(){
     var tempcolor = this.value;
@@ -199,6 +202,7 @@ function buttonInteraction(){
     materialAmbient[0] = rgb.x
     materialAmbient[1] = rgb.y
     materialAmbient[2] = rgb.z
+    ambientProduct = mult(lightAmbient, materialAmbient);
   }
   document.getElementById("material_specular").onchange = function(){
     var tempcolor = this.value;
@@ -206,6 +210,7 @@ function buttonInteraction(){
     materialSpecular[0] = rgb.x
     materialSpecular[1] = rgb.y
     materialSpecular[2] = rgb.z
+    specularProduct = mult(lightSpecular, materialSpecular);
   }
 
   document.getElementById("coe_material_diffuse").onchange = function(){
@@ -237,6 +242,13 @@ function render()
     if (theta[0] > 360.0) {
       theta[0] -= 360.0;
     }
+
+    gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
+    gl.uniform4fv(ambientProductLoc, flatten(ambientProduct));
+    gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
+    gl.uniform4fv(specularProductLoc, flatten(specularProduct));
+    gl.uniform1f(shininessLoc, materialShininess);
+  
 
     gl.uniform3fv(thetaLoc, flatten(theta));
     gl.drawArrays( gl.TRIANGLES, 0, points.length );
