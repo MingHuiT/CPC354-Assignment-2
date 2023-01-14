@@ -11,33 +11,42 @@ const cylinder_obj = "cylinder"
 const sphere_obj = "sphere"
 const teapot_obj = "teapot"
 
-const eye = vec3(1, 0, 2);                        //3.4a
+const eye = vec3(1.5, 0, 1.5);                        //3.4a
 const at = vec3(0.0, 0.0, 0.0);
-const up = vec3(0.0, 1.0, 0.0);
+const up = vec3(0.0, 0.0, 1.0);
 
+const volume = 1;
 const fov = 55;
-const near = 0.3;
+const near = -0.3;
 const far = 5;
 
-var lightPosition = vec4(-1.0, 0.0, 0.0, 1.0);    //3.2b, 3.2c, 3.2d
-// var lightPosition = vec4(0.0, 0.0, -1.0, 1.0);
-var lightAmbient = vec4(0.1, 0.2, 0.2, 1.0);      //3.2a
-var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
-var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+var lightPosition = vec4(1.0, 1.0, 1.0, 1.0);    //3.2b, 3.2c, 3.2d
+var lightAmbient = vec4(0.5, 0.2, 0.2, 1.0);      //3.2a
+var lightDiffuse = vec4(1.0, 0.5, 1.0, 1.0);
+var lightSpecular = vec4(1.0, 0.5, 1.0, 1.0);
 var lightPositionLoc;
-var ambientProduct, ambientProductLoc;
-var diffuseProduct, diffuseProductLoc;
-var specularProduct, specularProductLoc;
+var ambientProduct;
+var diffuseProduct;
+var specularProduct;
+var ambientProduct;
+var diffuseProduct;
+var specularProduct;
+var ambientProductLoc, diffuseProductLoc, specularProductLoc;
 var shininessLoc;
 
-var materialAmbient = vec4(0.0, 1.0, 0.0, 1.0);   //3.3a
-var materialDiffuse = vec4(0.4, 0.8, 0.4, 1.0);   //3.3b coefficient is a float (0 to 1) multiply with diffuse, ambient, specular
+var modelViewMatrix;
+var projectionMatrix;
+var modelViewMatrixLoc, projectionMatrixLoc;
+
+var materialAmbient = vec4(1.0, 1.0, 1.0, 1.0);   //3.3a
+var materialDiffuse = vec4(0.4, 0.3, 0.4, 1.0);   //3.3b coefficient is a float (0 to 1) multiply with diffuse, ambient, specular
 var materialSpecular = vec4(0.0, 0.4, 0.4, 1.0);  
-var materialShininess = 200.0;                    //3.3c
+var materialShininess = 100.0;                    //3.3c
 
 var Kd = 1.0;
 var Ka = 1.0;
 var Ks = 1.0;
+var KaLoc, KdLoc, KsLoc;
 
 window.onload = function init()
 {
@@ -54,6 +63,15 @@ window.onload = function init()
 }
 
 function WebGLSetup(){
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0.5, 0.5, 0.5, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    gl.enable(gl.DEPTH_TEST);
+
+    var program = initShaders(gl, "vertex-shader", "fragment-shader");
+    gl.useProgram(program);
+
     if (obj == cube_obj){
       object = cube(1.0);
     }
@@ -69,39 +87,45 @@ function WebGLSetup(){
       object.scale(0.25, 0.25, 0.25);
 
     }
-    
+
     theta = [0.0, 0.0, 0.0];
-
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
-
-    gl.enable(gl.DEPTH_TEST);
-
-    var program = initShaders(gl, "vertex-shader", "fragment-shader");
-    gl.useProgram(program);
-
-    var modelViewMatrix = lookAt(eye, at, up);
-    modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
-    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-
-    var aspectRatio = gl.canvas.width / gl.canvas.height;
-    var projectionMatrix = perspective(fov, aspectRatio, near, far);
-    projectionMatrixLoc = gl.getUniformLocation( program, "projectionMatrix" );
-    gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
-
-    thetaLoc = gl.getUniformLocation(program, "theta");
 
     points = []
     normals = []
-    // points = points.concat(cube.faces_as_triangles(normals));
     if (obj != teapot_obj){
-      points = points.concat(object.TriangleVertices)
-      normals = normals.concat(object.TriangleVertexColors)
+      points = object.TriangleVertices;
+      normals = object.TriangleNormals;
     }
     else{
       points = object.TriangleVertices;
       normals = object.Normals;
     }
+
+    var nBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, nBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
+
+    var vNormal = gl.getAttribLocation( program, "vNormal" );
+    gl.vertexAttribPointer( vNormal, 3, gl.FLOAT, false, 0, 0 );
+    gl.enableVertexAttribArray( vNormal );
+
+    var vBuffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer );
+    gl.bufferData( gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW );
+
+    var vPosition = gl.getAttribLocation(program, "vPosition");
+    gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(vPosition);
+
+    modelViewMatrix = lookAt(eye, at, up);
+    modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
+
+    // var aspectRatio = gl.canvas.width / gl.canvas.height;
+    // projectionMatrix = perspective(fov, aspectRatio, near, far);
+    projectionMatrix = ortho(-volume, volume, -volume, volume, near, far);
+    projectionMatrixLoc = gl.getUniformLocation( program, "projectionMatrix" );
+
+    thetaLoc = gl.getUniformLocation(program, "theta");
 
     lightPositionLoc = gl.getUniformLocation(program, "lightPosition");
 
@@ -116,21 +140,9 @@ function WebGLSetup(){
 
     shininessLoc = gl.getUniformLocation(program, "shininess");
 
-    var vBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
-
-    var vPosition = gl.getAttribLocation(program, "vPosition");
-    gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vPosition);
-
-    var nBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW);
-
-    var vNormal = gl.getAttribLocation(program, "vNormal");
-    gl.vertexAttribPointer(vNormal, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vNormal);
+    KaLoc = gl.getUniformLocation(program, "Ka");
+    KdLoc = gl.getUniformLocation(program, "Kd");
+    KsLoc = gl.getUniformLocation(program, "Ks");
 }
 
 function buttonInteraction(){
@@ -169,10 +181,12 @@ function buttonInteraction(){
     if(type == 1.0){
       lightPosition[3] = 0.0
       document.getElementById("light_type").innerHTML = "Distance Light"
+      console.log(lightPosition[3])
     }
     else if (type == 0.0){
       lightPosition[3] = 1.0
       document.getElementById("light_type").innerHTML = "Point Light"
+      console.log(lightPosition[3])
     }
   }
 
@@ -250,7 +264,24 @@ function render()
     gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
     gl.uniform4fv(specularProductLoc, flatten(specularProduct));
     gl.uniform1f(shininessLoc, materialShininess);
-  
+
+    // modelViewMatrix = mat4();
+    gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+    gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
+
+    gl.uniform1f(KaLoc, Ka);
+    gl.uniform1f(KdLoc, Kd);
+    gl.uniform1f(KsLoc, Ks);
+
+    theta[0] += 0.2;
+    theta[1] += 0.5;
+
+    if (theta[1] > 360.0) {
+      theta[1] -= 360.0;
+    }
+    if (theta[0] > 360.0) {
+      theta[0] -= 360.0;
+    }
 
     gl.uniform3fv(thetaLoc, flatten(theta));
     gl.drawArrays( gl.TRIANGLES, 0, points.length );
