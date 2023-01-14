@@ -11,7 +11,7 @@ const cylinder_obj = "cylinder"
 const sphere_obj = "sphere"
 const teapot_obj = "teapot"
 
-const eye = vec3(1.5, 0, 1.5);                        //3.4a
+const eye = vec3(1.0, 0.0, 1.5);                        //3.4a
 const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 0.0, 1.0);
 
@@ -85,8 +85,8 @@ function WebGLSetup(){
     else if (obj == teapot_obj){
       object = teapot(3);
       object.scale(0.25, 0.25, 0.25);
-
     }
+    object.rotate(45, [1, 1, 1]);
 
     theta = [0.0, 0.0, 0.0];
 
@@ -117,7 +117,6 @@ function WebGLSetup(){
     gl.vertexAttribPointer(vPosition, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vPosition);
 
-    modelViewMatrix = lookAt(eye, at, up);
     modelViewMatrixLoc = gl.getUniformLocation(program, "modelViewMatrix");
 
     // var aspectRatio = gl.canvas.width / gl.canvas.height;
@@ -249,16 +248,6 @@ function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT );
 
-    theta[0] += 0.5;
-    theta[1] += 1.0;
-
-    if (theta[1] > 360.0) {
-      theta[1] -= 360.0;
-    }
-    if (theta[0] > 360.0) {
-      theta[0] -= 360.0;
-    }
-
     gl.uniform4fv(lightPositionLoc, flatten(lightPosition));
     gl.uniform4fv(ambientProductLoc, flatten(ambientProduct));
     gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
@@ -266,6 +255,7 @@ function render()
     gl.uniform1f(shininessLoc, materialShininess);
 
     // modelViewMatrix = mat4();
+    modelViewMatrix = lookAt(eye, at, up);
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
@@ -273,8 +263,18 @@ function render()
     gl.uniform1f(KdLoc, Kd);
     gl.uniform1f(KsLoc, Ks);
 
-    theta[0] += 0.2;
-    theta[1] += 0.5;
+    // eye[0] += 0.01;
+    // console.log(eye[0])
+    // eye[1] += 0.01;
+    // if (eye[0] > 2 * Math.PI){
+    //   eye[0] -= 2 * Math.PI;
+    // }
+    // if (eye[1] > 2 * Math.PI){
+    //   eye[1] -= 2 * Math.PI;
+    // }
+    
+    theta[0] += 0.5;
+    theta[1] += 1.0;
 
     if (theta[1] > 360.0) {
       theta[1] -= 360.0;
