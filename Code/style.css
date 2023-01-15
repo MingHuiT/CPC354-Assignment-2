@@ -3,4 +3,71 @@
     border-radius: 10px;
     padding: 20px 20px;
     box-shadow: 5px 10px 8px #97A2FF;
+    min-height: min-content;
+    display: flex;
+}
+
+.col1, .col2, .col3 {
+    float: left;
+    width: 33%;
+}
+
+#object {
+    border: none;
+    padding: 5px 5px;
+}
+
+button {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #f7f1f1;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+input[type=color] {
+    border: none;
+    background: none;
+}
+
+.slider {
+    appearance: none;
+    width: 30%;
+    height: 15px;
+    background: #fdfdfd;
+    outline: none;
+    opacity: 1;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-bottom: 10px;
+}
+  
+.slider:hover {
+background: #f7f1f1;
+}
+  
+.slider::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 15px;
+height: 15px;
+background: #97A2FF;
+cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+width: 15px;
+height: 15px;
+background: #97A2FF;
+cursor: pointer;
 }

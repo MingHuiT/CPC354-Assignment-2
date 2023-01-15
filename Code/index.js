@@ -86,6 +86,7 @@ function WebGLSetup(){
       object = teapot(3);
       object.scale(0.25, 0.25, 0.25);
     }
+
     object.rotate(45, [1, 1, 1]);
 
     theta = [0.0, 0.0, 0.0];
@@ -145,12 +146,12 @@ function WebGLSetup(){
 }
 
 function buttonInteraction(){
-  document.getElementById("object").onchange = function(){
+  document.getElementById("object").oninput = function(){
     obj = this.value
     WebGLSetup()
   }
 
-  document.getElementById("light_diffuse").onchange = function(){
+  document.getElementById("light_diffuse").oninput = function(){
     var tempcolor = this.value;
     var rgb = convertHexToRGB(tempcolor);
     lightDiffuse[0] = rgb.x
@@ -158,7 +159,7 @@ function buttonInteraction(){
     lightDiffuse[2] = rgb.z
     diffuseProduct = mult(lightDiffuse, materialDiffuse);
   }
-  document.getElementById("light_ambient").onchange = function(){
+  document.getElementById("light_ambient").oninput = function(){
     var tempcolor = this.value;
     var rgb = convertHexToRGB(tempcolor);
     lightAmbient[0] = rgb.x
@@ -166,7 +167,7 @@ function buttonInteraction(){
     lightAmbient[2] = rgb.z
     ambientProduct = mult(lightAmbient, materialAmbient);
   }
-  document.getElementById("light_specular").onchange = function(){
+  document.getElementById("light_specular").oninput = function(){
     var tempcolor = this.value;
     var rgb = convertHexToRGB(tempcolor);
     lightSpecular[0] = rgb.x
@@ -190,20 +191,47 @@ function buttonInteraction(){
   }
 
   document.getElementById("on_off").onclick = function(){
-    
+    on = lightPosition[0]
+    if(on >= 1.0){
+      lightPosition[0] = -1.0;
+      lightPosition[1] = -1.0;
+      lightPosition[2] = -1.0;
+      document.getElementById('light_X').disabled = true;
+      document.getElementById('light_Y').disabled = true;
+      document.getElementById('light_Z').disabled = true;
+      document.getElementById("on_off").innerHTML = "On"
+    }
+    else if(on <= 0.0){
+      lightPosition[0] = 1.0;
+      document.getElementById('light_X').disabled = false;
+      document.getElementById('light_Y').disabled = false;
+      document.getElementById('light_Z').disabled = false;
+      document.getElementById("on_off").innerHTML = "Off"
+    }
+  }
+
+  document.getElementById("cam_angle_eye").oninput = function(){
+    eye[0] = this.value;
+  }
+  document.getElementById("cam_angle_at").oninput = function(){
+    at[1] = this.value;
+    at[2] = this.value;
+  }
+  document.getElementById("cam_angle_up").oninput = function(){
+    up[1] = this.value;
   }
   
-  document.getElementById("light_X").onchange = function(){
+  document.getElementById("light_X").oninput = function(){
     lightPosition[0] = this.value;
   }
-  document.getElementById("light_Y").onchange = function(){
+  document.getElementById("light_Y").oninput = function(){
     lightPosition[1] = this.value;
   }
-  document.getElementById("light_Z").onchange = function(){
+  document.getElementById("light_Z").oninput = function(){
     lightPosition[2] = this.value;
   }
 
-  document.getElementById("material_diffuse").onchange = function(){
+  document.getElementById("material_diffuse").oninput = function(){
     var tempcolor = this.value;
     var rgb = convertHexToRGB(tempcolor);
     materialDiffuse[0] = rgb.x
@@ -211,7 +239,7 @@ function buttonInteraction(){
     materialDiffuse[2] = rgb.z
     diffuseProduct = mult(lightDiffuse, materialDiffuse);
   }
-  document.getElementById("material_ambient").onchange = function(){
+  document.getElementById("material_ambient").oninput = function(){
     var tempcolor = this.value;
     var rgb = convertHexToRGB(tempcolor);
     materialAmbient[0] = rgb.x
@@ -219,7 +247,7 @@ function buttonInteraction(){
     materialAmbient[2] = rgb.z
     ambientProduct = mult(lightAmbient, materialAmbient);
   }
-  document.getElementById("material_specular").onchange = function(){
+  document.getElementById("material_specular").oninput = function(){
     var tempcolor = this.value;
     var rgb = convertHexToRGB(tempcolor);
     materialSpecular[0] = rgb.x
@@ -228,17 +256,17 @@ function buttonInteraction(){
     specularProduct = mult(lightSpecular, materialSpecular);
   }
 
-  document.getElementById("coe_material_diffuse").onchange = function(){
+  document.getElementById("coe_material_diffuse").oninput = function(){
     Kd = this.value;
   }
-  document.getElementById("coe_material_ambient").onchange = function(){
+  document.getElementById("coe_material_ambient").oninput = function(){
     Ka = this.value;
   }
-  document.getElementById("coe_material_specular").onchange = function(){
+  document.getElementById("coe_material_specular").oninput = function(){
     Ks = this.value;
   }
 
-  document.getElementById("material_shininess").onchange = function(){
+  document.getElementById("material_shininess").oninput = function(){
     materialShininess = this.value;
   }
 
@@ -273,15 +301,15 @@ function render()
     //   eye[1] -= 2 * Math.PI;
     // }
     
-    theta[0] += 0.5;
-    theta[1] += 1.0;
+    // theta[0] += 0.5;
+    // theta[1] += 1.0;
 
-    if (theta[1] > 360.0) {
-      theta[1] -= 360.0;
-    }
-    if (theta[0] > 360.0) {
-      theta[0] -= 360.0;
-    }
+    // if (theta[1] > 360.0) {
+    //   theta[1] -= 360.0;
+    // }
+    // if (theta[0] > 360.0) {
+    //   theta[0] -= 360.0;
+    // }
 
     gl.uniform3fv(thetaLoc, flatten(theta));
     gl.drawArrays( gl.TRIANGLES, 0, points.length );

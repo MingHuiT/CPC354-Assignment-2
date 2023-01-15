@@ -107,63 +107,75 @@
     </div>
 
     <div class="control-panel">
-      <div class="object-selection">
-            <label for="object">Choose an object: </label>
-            <select name="object" id="object">
-                <option value="cube">Cube</option>
-                <option value="cylinder">Cylinder</option>
-                <option value="sphere">Sphere</option>
-                <option value="teapot">Teapot</option>
-            </select>
+      <div class="col1">
+        <div class="object-selection" style="margin-bottom: 10px;">
+              <label for="object">Choose an object: </label>
+              <select name="object" id="object">
+                  <option value="cube">Cube</option>
+                  <option value="cylinder">Cylinder</option>
+                  <option value="sphere">Sphere</option>
+                  <!-- <option value="teapot">Teapot</option> -->
+              </select>
+        </div>
+
+        <div class="light-selection" style="margin-bottom: 15px;">
+          <input type="color" id="light_diffuse"></input>
+          <label>Diffuse Light </label>
+          <br>
+          <input type="color" id="light_ambient"></input>
+          <label>Ambient Light</label>
+          <br>
+          <input type="color" id="light_specular"></input>
+          <label>Specular Light</label>
+          <br>
+        </div>
+
+        <div>
+          <button id="light_type">Point Light</button>
+          <button id="on_off">On</button>
+        </div>
       </div>
 
-      <div>
-        <input type="color" id="light_diffuse"></input>
-        <label>Diffuse Light </label>
-        <br>
-        <input type="color" id="light_ambient"></input>
-        <label>Ambient Light</label>
-        <br>
-        <input type="color" id="light_specular"></input>
-        <label>Specular Light</label>
-        <br>
+      <div class="col2">
+        <div class="cam-angle-selection" style="margin-bottom: 15px;">
+          <input class="slider" type="range" id="cam_angle_eye" min="-4" max="4" value="0" step="0.01">Angle Eye</input>
+          <br>
+          <input class="slider" type="range" id="cam_angle_at" min="-5" max="5" value="0" step="0.01">Angle At</input>
+          <br>
+          <input class="slider" type="range" id="cam_angle_up" min="-5" max="5" value="0" step="0.01">Angle Up</input>
+        </div>
+
+        <div class="light-angle-selection">
+          <input class="slider" type="range" id="light_X" min="-1" max="3" value="1" step="0.001">Light Position X value</input>
+          <br>
+          <input class="slider" type="range" id="light_Y" min="-1" max="3" value="1" step="0.001">Light Position Y value</input>
+          <br>
+          <input class="slider" type="range" id="light_Z" min="-1" max="3" value="1" step="0.001">Light Position Z value</input>
+        </div>
       </div>
 
-      <div>
-        <button id="light_type">Point Light</button>
-        <button id="on_off">Turn On or Off</button>
-      </div>
-
-      <div>
-        <input type="range" id="light_X" min="0" max="1" step="0.001">Light Position X value</input>
-        <br>
-        <input type="range" id="light_Y" min="0" max="1" step="0.001">Light Position Y value</input>
-        <br>
-        <input type="range" id="light_Z" min="0" max="1" step="0.001">Light Position Z value</input>
-      </div>
-
-      <div>
-        <input type="color" id="material_diffuse"></input>
-        <label>Diffuse Material </label>
-        <br>
-        <input type="color" id="material_ambient"></input>
-        <label>Ambient Material</label>
-        <br>
-        <input type="color" id="material_specular"></input>
-        <label>Specular Material</label>
-        <br>
-      </div>
-      
-      <div>
-        <input type="range" id="coe_material_diffuse" min="0" max="1" step="0.001">Coefficient Diffuse Material</input>
-        <br>
-        <input type="range" id="coe_material_ambient" min="0" max="1" step="0.001">Coefficient Ambient Material</input>
-        <br>
-        <input type="range" id="coe_material_specular" min="0" max="1" step="0.001">Coefficient Specular Material</input>
-      </div>
-
-      <div>
-        <input type="range" id="material_shininess">Material Shininess</input>
+      <div class="col3">
+        <div class="material-selection" style="margin-bottom: 15px;">
+          <input type="color" id="material_diffuse"></input>
+          <label>Diffuse Material </label>
+          <br>
+          <input type="color" id="material_ambient"></input>
+          <label>Ambient Material</label>
+          <br>
+          <input type="color" id="material_specular"></input>
+          <label>Specular Material</label>
+          <br>
+        </div>
+        
+        <div class="material-coe-selection">
+          <input class="slider" type="range" id="coe_material_diffuse" min="0" max="1" step="0.001">Coefficient Diffuse Material</input>
+          <br>
+          <input class="slider" type="range" id="coe_material_ambient" min="0" max="1" step="0.001">Coefficient Ambient Material</input>
+          <br>
+          <input class="slider" type="range" id="coe_material_specular" min="0" max="1" step="0.001">Coefficient Specular Material</input>
+          <br>
+          <input class="slider" type="range" id="material_shininess" min="1" max="100" value="100" step="1">Material Shininess</input>
+        </div>
       </div>
     </div>
 

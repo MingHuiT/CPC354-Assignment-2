@@ -745,7 +745,7 @@ function light0() {
   data.lightAmbient = [0.2, 0.2, 0.2, 1.0 ];
   data.lightDiffuse = [ 1.0, 1.0, 1.0, 1.0 ];
   data.lightSpecular = [1.0, 1.0, 1.0, 1.0 ];
-  data.lightShineness = 10;
+  data.lightShineness = 100;
   return data;
 }
 
