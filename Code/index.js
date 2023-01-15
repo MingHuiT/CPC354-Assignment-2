@@ -202,7 +202,9 @@ function buttonInteraction(){
       document.getElementById("on_off").innerHTML = "On"
     }
     else if(on <= 0.0){
-      lightPosition[0] = 1.0;
+      lightPosition[0] = document.getElementById('light_X').value;
+      lightPosition[1] = document.getElementById('light_Y').value;
+      lightPosition[2] = document.getElementById('light_Z').value;
       document.getElementById('light_X').disabled = false;
       document.getElementById('light_Y').disabled = false;
       document.getElementById('light_Z').disabled = false;
