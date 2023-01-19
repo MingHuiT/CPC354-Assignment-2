@@ -100,7 +100,7 @@
   <body>
     <h1 style="text-align: center;">CPC354 Assignment 2 - Lightning and Shading</h1>
     <div style="text-align: center;">
-      <canvas id="gl-canvas" width="512" height="512">
+      <canvas id="gl-canvas" width="512" height="512" style="background-color: white;">
         <!-- The following message is displayed if the browser doesn’t support HTML5 -->
         Sorry; your web browser does not support HTML5’s canvas element.
       </canvas>
@@ -137,20 +137,40 @@
       </div>
 
       <div class="col2">
-        <div class="cam-angle-selection" style="margin-bottom: 15px;">
-          <input class="slider" type="range" id="cam_angle_eye" min="-4" max="4" value="0" step="0.01">Angle Eye</input>
+        <div class="shiness">
+          <label>Material Shininess </label>
           <br>
-          <input class="slider" type="range" id="cam_angle_at" min="-5" max="5" value="0" step="0.01">Angle At</input>
-          <br>
-          <input class="slider" type="range" id="cam_angle_up" min="-5" max="5" value="0" step="0.01">Angle Up</input>
+          <input class="slider" type="range" id="material_shininess" min="1" max="100" value="100" step="1"></input>
         </div>
 
-        <div class="light-angle-selection">
-          <input class="slider" type="range" id="light_X" min="-1" max="3" value="1" step="0.001">Light Position X value</input>
+        <div class="cam-angle-selection" style="margin-bottom: 15px; float: left; width: 50%;">
+          <p><b>Camera Angle Control</b></p> 
+          <label>Angle Eye </label>
           <br>
-          <input class="slider" type="range" id="light_Y" min="-1" max="3" value="1" step="0.001">Light Position Y value</input>
+          <input class="slider" type="range" id="cam_angle_eye" min="-4" max="4" value="0" step="0.01" style="width: 60%;"></input>
           <br>
-          <input class="slider" type="range" id="light_Z" min="-1" max="3" value="1" step="0.001">Light Position Z value</input>
+          <label>Angle At </label>
+          <br>
+          <input class="slider" type="range" id="cam_angle_at" min="-5" max="5" value="0" step="0.01" style="width: 60%;"></input>
+          <br>
+          <label>Angle Up </label>
+          <br>
+          <input class="slider" type="range" id="cam_angle_up" min="-5" max="5" value="0" step="0.01" style="width: 60%;"></input>
+        </div>
+
+        <div class="light-angle-selection" style="float: left; width: 50%;">
+          <p><b>Light Position Control</b></p> 
+          <label>Light Position X value </label>
+          <br>
+          <input class="slider" type="range" id="light_X" min="-1" max="3" value="1" step="0.001" style="width: 60%;"></input>
+          <br>
+          <label>Light Position Y value </label>
+          <br>
+          <input class="slider" type="range" id="light_Y" min="-1" max="3" value="1" step="0.001" style="width: 60%;"></input>
+          <br>
+          <label>Light Position Z value </label>
+          <br>
+          <input class="slider" type="range" id="light_Z" min="-1" max="3" value="1" step="0.001" style="width: 60%;"></input>
         </div>
       </div>
 
@@ -168,13 +188,18 @@
         </div>
         
         <div class="material-coe-selection">
-          <input class="slider" type="range" id="coe_material_diffuse" min="0" max="1" step="0.001">Coefficient Diffuse Material</input>
+          <label>Coefficient Diffuse Material </label>
           <br>
-          <input class="slider" type="range" id="coe_material_ambient" min="0" max="1" step="0.001">Coefficient Ambient Material</input>
+          <input class="slider" type="range" id="coe_material_diffuse" min="0" max="1" step="0.001"></input>
           <br>
-          <input class="slider" type="range" id="coe_material_specular" min="0" max="1" step="0.001">Coefficient Specular Material</input>
+          <label>Coefficient Ambient Material </label>
           <br>
-          <input class="slider" type="range" id="material_shininess" min="1" max="100" value="100" step="1">Material Shininess</input>
+          <input class="slider" type="range" id="coe_material_ambient" min="0" max="1" step="0.001"></input>
+          <br>
+          <label>Coefficient Specular Material </label>
+          <br>
+          <input class="slider" type="range" id="coe_material_specular" min="0" max="1" step="0.001"></input>
+          <br>
         </div>
       </div>
     </div>

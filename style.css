@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
+body {
+    font-family: 'IBM Plex', monospace;
+}
+
 .control-panel {
     background-color: #dcd3ffb3;
     border-radius: 10px;
@@ -10,6 +16,7 @@
 .col1, .col2, .col3 {
     float: left;
     width: 33%;
+    text-align: center;
 }
 
 #object {
@@ -24,6 +31,7 @@ button {
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+    font-family: 'IBM Plex', monospace;
 }
 
 button:hover {
@@ -42,7 +50,7 @@ input[type=color] {
 
 .slider {
     appearance: none;
-    width: 30%;
+    width: 40%;
     height: 15px;
     background: #fdfdfd;
     outline: none;
