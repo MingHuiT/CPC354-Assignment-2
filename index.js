@@ -5,6 +5,7 @@ var object;
 var points = [];
 var normals = [];
 
+// Set the shape of the displayed object
 const cube_obj = "cube"
 const cylinder_obj = "cylinder"
 const sphere_obj = "sphere"
@@ -14,6 +15,7 @@ const eye = vec3(1.0, 0.0, 1.5);
 const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 0.0, 1.0);
 
+// Use to set volume of the scene (projectionMatrix)
 const volume = 1;
 const fov = 55;
 const near = -0.3;
@@ -307,6 +309,7 @@ function render()
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
+    // Pass the coefficient value to the vertex shader
     gl.uniform1f(KaLoc, Ka);
     gl.uniform1f(KdLoc, Kd);
     gl.uniform1f(KsLoc, Ks);
