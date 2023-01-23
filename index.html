@@ -10,17 +10,36 @@
     attribute  vec4 vPosition;
     attribute  vec3 vNormal;
     varying vec4 fColor;
-    
+
     uniform vec4 ambientProduct, diffuseProduct, specularProduct;
     uniform mat4 modelViewMatrix;
     uniform mat4 projectionMatrix;
     uniform vec4 lightPosition;
     uniform float shininess;
     uniform float Ka, Kd, Ks;
+    uniform vec3 theta;
     
     void main()
     {
-      vec3 pos = -(modelViewMatrix * vPosition).xyz;
+      vec3 angles = radians(theta);
+      vec3 c = cos(angles);
+      vec3 s = sin(angles);
+      mat4 rx = mat4(
+        1.0, 0.0, 0.0, 0.0,
+        0.0, c.x, s.x, 0.0,
+        0.0, -s.x, c.x, 0.0,
+        0.0, 0.0, 0.0, 1.0
+      );
+      mat4 ry = mat4(
+        c.y, 0.0, -s.y, 0.0,
+        0.0, 1.0, 0.0, 0.0,
+        s.y, 0.0, c.y, 0.0,
+        0.0, 0.0, 0.0, 1.0
+      );
+
+      vec3 pos = -(modelViewMatrix * rx * ry * vPosition).xyz;
+
+      //fixed light postion
 
       vec3 light = lightPosition.xyz;
 
@@ -30,28 +49,26 @@
 
       vec4 NN = vec4(vNormal,0);
 
+      // Transform vertex normal into eye coordinates
+
       vec3 N = normalize( (modelViewMatrix * NN).xyz);
 
-      // Calculate the respective value according to formula
-      // For ambient
+      // Compute terms in the illumination equation
       vec4 ambient = ambientProduct;
 
-      // For diffuse
       float lambertian = max( dot(L, N), 0.0 );
       vec4  diffuse = lambertian * diffuseProduct;
 
-      // FOr specular
       float specAngle = pow( max(dot(N, H), 0.0), shininess );
       vec4  specular = specAngle * specularProduct;
+
       if( dot(L, N) < 0.0 ) {
         specular = vec4(0.0, 0.0, 0.0, 1.0);
       }
 
-      // Set the points of the shape and produce the object
-      gl_Position = projectionMatrix * modelViewMatrix * vPosition;
-
-      // Set the color of the object and pass to fragment shader
+      gl_Position = projectionMatrix * modelViewMatrix * rx * ry * vPosition;
       fColor = Ka * ambient + Kd * diffuse + Ks * specular;
+
       fColor.a = 1.0;
     }
   </script>
@@ -70,9 +87,12 @@
   <script type="text/javascript" src="Common/initShaders.js"></script>
   <script type="text/javascript" src="Common/MV.js"></script>
   <script type="text/javascript" src="vecMat.js"></script>
+  <script type="text/javascript" src="geometry.js"></script>
+  <script type="text/javascript" src="geometry2.js"></script>
   <script type="text/javascript" src="cube.js"></script>
   <script type="text/javascript" src="cylinder.js"></script>
   <script type="text/javascript" src="sphere.js"></script>
+  <script type="text/javascript" src="teapot.js"></script>
   <script type="text/javascript" src="index.js"></script>
 
 </head>
@@ -94,17 +114,18 @@
                   <option value="cube">Cube</option>
                   <option value="cylinder">Cylinder</option>
                   <option value="sphere">Sphere</option>
+                  <!-- <option value="teapot">Teapot</option> -->
               </select>
         </div>
 
         <div class="light-selection" style="margin-bottom: 15px;">
-          <input type="color" id="light_diffuse"></input>
+          <input type="color" id="light_diffuse" value="#FFCDC7"></input>
           <label>Diffuse Light </label>
           <br>
-          <input type="color" id="light_ambient"></input>
+          <input type="color" id="light_ambient" value="#DD6969"></input>
           <label>Ambient Light</label>
           <br>
-          <input type="color" id="light_specular"></input>
+          <input type="color" id="light_specular" value="#FFFFFF"></input>
           <label>Specular Light</label>
           <br>
         </div>
@@ -155,13 +176,13 @@
 
       <div class="col3">
         <div class="material-selection" style="margin-bottom: 15px;">
-          <input type="color" id="material_diffuse"></input>
+          <input type="color" id="material_diffuse" value="#B78585"></input>
           <label>Diffuse Material </label>
           <br>
-          <input type="color" id="material_ambient"></input>
+          <input type="color" id="material_ambient" value="#BE9D9D"></input>
           <label>Ambient Material</label>
           <br>
-          <input type="color" id="material_specular"></input>
+          <input type="color" id="material_specular" value="#EBE5E5"></input>
           <label>Specular Material</label>
           <br>
         </div>
